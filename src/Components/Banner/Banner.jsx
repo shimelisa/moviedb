@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Play, Info } from "lucide-react";
 
 import NetflixBannerLogo from "../../assets/image/logo.png";
+import TMDBLogo from "../../assets/image/TMDB.svg"
+
 import styles from "./Banner.module.css";
 import { movieInstance } from "../../Utility/MovieInstance";
 import requests from "../../Utility/requestUrls";
@@ -42,6 +44,11 @@ export default function Banner() {
           className={styles.logoImage}
           src={NetflixBannerLogo}
           alt="Netflix logo"
+        /> <br />
+        <img
+          className={styles.logoImage}
+          src={TMDBLogo}
+          alt="TMDB logo"
         />
 
         {/* title */}
@@ -53,7 +60,7 @@ export default function Banner() {
           {/* Shondaland's Emmy-winning series brings Julia Quinn's novels to life,
           as eight siblings seek their perfect match amid London's scandals and
           soirées. */}
-          {truncate(bannerImage?.overview,120)}
+          {truncate(bannerImage?.overview, 120)}
         </h1>
 
         {/* buttons */}

@@ -67,6 +67,10 @@ export default function DisplayRow() {
       <SlideShow title="Popular on Netflix" movies={movies.netflixOriginals} />
       <SlideShow title="Action" movies={movies.action} />
       <SlideShow title="Top Rated" movies={movies.topRated} />
+      <SlideShow title="Comedy" movies={movies.comedy} />
+      <SlideShow title="Horror" movies={movies.horror} />
+      <SlideShow title="romance" movies={movies.romance} />
+      <SlideShow title="Documentaries" movies={movies.documentaries} />
     </div>
   );
 }
