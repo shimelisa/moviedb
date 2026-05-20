@@ -62,7 +62,7 @@ export default function DisplayRow() {
 
   return (
     <div className={styles.mainWrapper}>
-      <SlideShow title="Manual Movie List" movies={moviesManual} />
+      <SlideShow title="Local Movie List" movies={moviesManual} />
       <SlideShow title="Netflix trending" movies={movies.trending} />
       <SlideShow title="Popular on Netflix" movies={movies.netflixOriginals} />
       <SlideShow title="Action" movies={movies.action} />
