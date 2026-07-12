@@ -1,27 +1,42 @@
-import { useState } from 'react'
+import { Routes, Route } from "react-router-dom";
 
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
-import Header from './Components/Header/Header'
-import Banner from './Components/Banner/Banner'
-// import SlideShow from './Components/SlideShow/SlideShow'
-import DisplayRow from './Components/DisplayRow/DisplayRow'
-import Footer from './Components/Footer/Footer'
+import "./App.css";
+import Header from "./Components/Header/Header";
+import Banner from "./Components/Banner/Banner";
+import DisplayRow from "./Components/DisplayRow/DisplayRow";
+import Footer from "./Components/Footer/Footer";
+import SearchResults from "./Components/SearchResults/SearchResults";
+import MyListPage from "./Components/MyList/MyListPage";
+import MovieModal from "./Components/MovieModal/MovieModal";
+import { MyListProvider } from "./Context/MyListContext";
+import { MovieModalProvider } from "./Context/MovieModalContext";
 
-
-function App() {
-  const [count, setCount] = useState(0)
-
+function Home() {
   return (
     <>
-      <Header />
       <Banner />
       <DisplayRow />
-      <Footer />
     </>
-  )
+  );
 }
 
-export default App
+function App() {
+  return (
+    <MyListProvider>
+      <MovieModalProvider>
+        <Header />
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/search" element={<SearchResults />} />
+          <Route path="/my-list" element={<MyListPage />} />
+        </Routes>
+
+        <Footer />
+        <MovieModal />
+      </MovieModalProvider>
+    </MyListProvider>
+  );
+}
+
+export default App;

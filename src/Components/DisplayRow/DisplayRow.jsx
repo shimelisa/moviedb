@@ -17,13 +17,12 @@ export default function DisplayRow() {
     romance: [],
     documentaries: [],
   });
-  // console.log("manual:",moviesManual);
-
-  useEffect(() => {
-    fetchMovies();
-  }, []);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchMovies = async () => {
+    setIsLoading(true);
+    setError(null);
     try {
       const [
         trendingRes,
@@ -55,22 +54,62 @@ export default function DisplayRow() {
         romance: romanceRes.data.results,
         documentaries: docRes.data.results,
       });
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.error(err);
+      setError(
+        "Couldn't load movies from TMDB. Check your API key in .env and your network connection."
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchMovies();
+  }, []);
 
   return (
     <div className={styles.mainWrapper}>
       <SlideShow title="Local Movie List" movies={moviesManual} />
-      <SlideShow title="Netflix trending" movies={movies.trending} />
-      <SlideShow title="Popular on Netflix" movies={movies.netflixOriginals} />
-      <SlideShow title="Action" movies={movies.action} />
-      <SlideShow title="Top Rated" movies={movies.topRated} />
-      <SlideShow title="Comedy" movies={movies.comedy} />
-      <SlideShow title="Horror" movies={movies.horror} />
-      <SlideShow title="romance" movies={movies.romance} />
-      <SlideShow title="Documentaries" movies={movies.documentaries} />
+
+      {error && (
+        <p style={{ color: "#e87c03", padding: "0 24px", margin: "16px 0" }}>
+          {error}{" "}
+          <button
+            onClick={fetchMovies}
+            style={{
+              background: "none",
+              border: "1px solid #e87c03",
+              color: "#e87c03",
+              borderRadius: 4,
+              padding: "2px 10px",
+              cursor: "pointer",
+              marginLeft: 8,
+            }}
+          >
+            Retry
+          </button>
+        </p>
+      )}
+
+      {isLoading && !error && (
+        <p style={{ color: "#bbb", padding: "0 24px", margin: "16px 0" }}>
+          Loading movies…
+        </p>
+      )}
+
+      {!isLoading && !error && (
+        <>
+          <SlideShow title="Netflix trending" movies={movies.trending} />
+          <SlideShow title="Popular on Netflix" movies={movies.netflixOriginals} />
+          <SlideShow title="Action" movies={movies.action} />
+          <SlideShow title="Top Rated" movies={movies.topRated} />
+          <SlideShow title="Comedy" movies={movies.comedy} />
+          <SlideShow title="Horror" movies={movies.horror} />
+          <SlideShow title="romance" movies={movies.romance} />
+          <SlideShow title="Documentaries" movies={movies.documentaries} />
+        </>
+      )}
     </div>
   );
 }

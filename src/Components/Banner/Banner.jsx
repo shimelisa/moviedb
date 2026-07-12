@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Play, Info } from "lucide-react";
+import { Play, Plus, Check } from "lucide-react";
 
 import NetflixBannerLogo from "../../assets/image/logo.png";
 import TMDBLogo from "../../assets/image/TMDB.svg"
@@ -7,11 +7,15 @@ import TMDBLogo from "../../assets/image/TMDB.svg"
 import styles from "./Banner.module.css";
 import { movieInstance } from "../../Utility/MovieInstance";
 import requests from "../../Utility/requestUrls";
+import { useMyList } from "../../Context/MyListContext";
+import { useMovieModal } from "../../Context/MovieModalContext";
 
 const BANNER_BASE = "https://image.tmdb.org/t/p/original/";
 
 export default function Banner() {
   const [bannerImage, setBannerImage] = useState({});
+  const { isInList, toggleInList } = useMyList();
+  const { openMovie } = useMovieModal();
 
   useEffect(() => {
     async function fetchBannerImage() {
@@ -26,9 +30,12 @@ export default function Banner() {
   }, []);
 
   // console.log(bannerImage);
-  function truncate(str="", n) {
+  function truncate(str = "", n) {
     return str.length > n ? str.substr(0, n - 1) + "..." : str;
   }
+
+  const hasBanner = Boolean(bannerImage?.id);
+  const inList = hasBanner && isInList(bannerImage);
 
   return (
     <div
@@ -65,12 +72,20 @@ export default function Banner() {
 
         {/* buttons */}
         <div className={styles.buttonContainer}>
-          <button className={styles.button}>
+          <button
+            className={styles.button}
+            disabled={!hasBanner}
+            onClick={() => hasBanner && openMovie(bannerImage)}
+          >
             <Play size={30} />
             Play
           </button>
-          <button className={styles.button}>
-            <Info size={30} />
+          <button
+            className={styles.button}
+            disabled={!hasBanner}
+            onClick={() => hasBanner && toggleInList(bannerImage)}
+          >
+            {inList ? <Check size={30} /> : <Plus size={30} />}
             My List
           </button>
         </div>
